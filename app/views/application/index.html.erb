@@ -1,0 +1,11 @@
+<div class="container">
+  <h1>Stock News</h1>
+  <% if flash.notice %>
+    <div class="alert alert-danger" role="alert">
+      <%= flash.notice %>
+    </div>
+  <% end %>
+  <br>
+
+  <%= render "newsfeed" %>
+</div>

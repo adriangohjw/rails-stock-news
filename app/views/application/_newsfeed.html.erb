@@ -1,0 +1,62 @@
+<%= form_with url: root_path, method: :get do |f| %>
+  <div class="row">
+    <div class="col-10">
+      <%= f.text_field :search, required: true, 
+                                value: params[:search],
+                                placeholder: 'Search for news...', 
+                                class: 'form-control' %>
+    </div>
+    <div class="col-2">
+      <%= f.submit 'Search', class: 'btn btn-success btn-block' %>
+    </div>
+  </div>
+<% end %>
+<br>
+
+<table class="table table-striped" style="width: 100%; table-layout: fixed;">
+  <thead>
+    <tr>
+      <th scope="col" style="width: 15%;">Date</th>
+      <th scope="col" style="width: 60%;">Article</th>
+      <th scope="col" style="width: 25%;">Keywords</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% unless @response.nil? %>
+      <% @response['data'].each do |data| %>
+        <tr>
+          <% data_presenter = NewsfeedDataPresenter.new(data) %>
+          <td><%= data_presenter.published_at %></td>
+          <td>
+            <span style="font-weight: bold;">
+              <%= link_to data_presenter.title, data_presenter.url, target: '_blank' %>
+            </span><br>
+            <%= data_presenter.description %><br>
+            <span style="font-size: 80%; color: grey;">
+              <%= data_presenter.snippet %>
+            </span><br>
+            <span>
+              <%= image_tag data_presenter.image_url, style: 'width: 50%; height: 50%;' %>
+            </span>
+            <% unless data_presenter.similar_news_data.blank? %>
+              <hr>
+              <p style="font-weight: bold;">SIMILAR NEWS</p>
+              <ul>
+                <% data_presenter.similar_news_data.each do |similar_news| %>
+                  <li>
+                    <%= link_to similar_news.title, similar_news.url %>
+                  </li>
+                <% end %>
+              </ul>
+            <% end %>
+          </td>
+          <td>
+            <% data_presenter.keywords.each do |keyword| %>
+              <span class="badge bg-primary" style="color: white;"><%= keyword %></span>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
