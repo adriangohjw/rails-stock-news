@@ -1,8 +1,12 @@
 <%= form_with url: root_path, method: :get do |f| %>
   <div class="row">
-    <div class="col-10">
-      <%= f.text_field :search, required: true, 
-                                value: params[:search],
+    <div class="col-2">
+      <%= f.text_field :symbols, value: params[:symbols],
+                                 placeholder: 'TSLA',
+                                 class: 'form-control' %>
+    </div>
+    <div class="col-8">
+      <%= f.text_field :search, value: params[:search],
                                 placeholder: 'Search for news...', 
                                 class: 'form-control' %>
     </div>
@@ -22,7 +26,7 @@
     </tr>
   </thead>
   <tbody>
-    <% unless @response.nil? || params[:search].blank? %>
+    <% unless @response.nil? || (params[:symbols].blank? && params[:search].blank?) %>
       <% @response['data'].each do |data| %>
         <tr>
           <% data_presenter = NewsfeedDataPresenter.new(data) %>
