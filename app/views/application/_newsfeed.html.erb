@@ -22,7 +22,7 @@
     </tr>
   </thead>
   <tbody>
-    <% unless @response.nil? %>
+    <% unless @response.nil? || params[:search].blank? %>
       <% @response['data'].each do |data| %>
         <tr>
           <% data_presenter = NewsfeedDataPresenter.new(data) %>
