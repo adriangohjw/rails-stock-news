@@ -5,7 +5,12 @@
                                  placeholder: 'TSLA',
                                  class: 'form-control' %>
     </div>
-    <div class="col-8">
+    <div class="col-2">
+      <%= f.select :sentiment, options_for_select({'All'=>''}.merge(Sentiment::OPTIONS.invert), params[:sentiment]),
+                               {},
+                               { class: 'form-control' } %>
+    </div>
+    <div class="col-6">
       <%= f.text_field :search, value: params[:search],
                                 placeholder: 'Search for news...', 
                                 class: 'form-control' %>
@@ -26,7 +31,7 @@
     </tr>
   </thead>
   <tbody>
-    <% unless @response.nil? || (params[:symbols].blank? && params[:search].blank?) %>
+    <% unless @response.nil? || (params[:symbols].blank? && params[:sentiment].blank? && params[:search].blank?) %>
       <% @response['data'].each do |data| %>
         <tr>
           <% data_presenter = NewsfeedDataPresenter.new(data) %>
